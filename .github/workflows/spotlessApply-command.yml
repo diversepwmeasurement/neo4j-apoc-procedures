@@ -1,19 +1,19 @@
+jobs:
+  format:
+    runs-on: self-hosted
+    steps:
+    - continue-on-error: true
+      uses: actions/checkout@v3
+    - continue-on-error: true
+      name: Format and push changes to PR
+      uses: ./.github/actions/gradle-command-on-pr
+      with:
+        SERVICE_ACCOUNT_PAT: ${{ secrets.SERVICE_ACCOUNT_PAT }}
+        TEAMCITY_FOUR_FOUR_URL: ${{ secrets.TEAMCITY_FOUR_FOUR_URL }}
+        TEAMCITY_PASSWORD: ${{ secrets.TEAMCITY_PASSWORD }}
+        TEAMCITY_USER: ${{ secrets.TEAMCITY_USER }}
+        gradle-command: spotlessApply
 name: Formats PR
 on:
   repository_dispatch:
-    types: [spotlessApply-command]
-
-jobs:
-  format:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Format and push changes to PR
-        uses: ./.github/actions/gradle-command-on-pr
-        with:
-          gradle-command: spotlessApply
-          TEAMCITY_FOUR_FOUR_URL: ${{ secrets.TEAMCITY_FOUR_FOUR_URL }}
-          TEAMCITY_USER: ${{ secrets.TEAMCITY_USER }}
-          TEAMCITY_PASSWORD: ${{ secrets.TEAMCITY_PASSWORD }}
-          SERVICE_ACCOUNT_PAT: ${{ secrets.SERVICE_ACCOUNT_PAT }}
+    types: trigger-ga___spotlessApply-command.yml

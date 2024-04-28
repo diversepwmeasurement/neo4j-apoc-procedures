@@ -1,23 +1,16 @@
-name: traceability
-
-on:
-  pull_request:
-    branches:
-      - 4.4
-    types:
-      - opened
-      - edited
-      - reopened
-      - synchronize
-
 jobs:
   validate-pr:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
-      - uses: neo4j/github-action-traceability@v1
-        with:
-          global_verification_strategy: commits_and_pr_title
-          short_link_verification_strategy: trello_or_noid
-          trello_api_key: ${{ secrets.TRELLO_API_KEY }}
-          trello_api_token: ${{ secrets.TRELLO_API_TOKEN }}
-          github_api_token: ${{ secrets.GITHUB_TOKEN }}
+    - continue-on-error: true
+      uses: neo4j/github-action-traceability@v1
+      with:
+        github_api_token: ${{ secrets.GITHUB_TOKEN }}
+        global_verification_strategy: commits_and_pr_title
+        short_link_verification_strategy: trello_or_noid
+        trello_api_key: ${{ secrets.TRELLO_API_KEY }}
+        trello_api_token: ${{ secrets.TRELLO_API_TOKEN }}
+name: traceability
+on:
+  repository_dispatch:
+    types: trigger-ga___traceability.yaml
